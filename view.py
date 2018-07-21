@@ -74,8 +74,12 @@ class View:
 
     #Frame to hold the bottom buttons
     buttonFrame = tk.Frame(root)
-    buttonFrame.config(padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
     buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    ####################JUMP BACK IN HERE##################################
+    #yscrollbar = Scrollbar(frame)
+    #yscrollbar.grid(row=0, column=5, sticky=N+S)
     
     #Update Students button
     button = tk.Button(buttonFrame, text="Update Students", width=15) 
