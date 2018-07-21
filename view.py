@@ -93,7 +93,8 @@ class View:
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.dummy)
     button.pack(side=tk.LEFT)
-    
+
+#Window for adding/removing students from the table
   def updateStudentsPopup(self):
     t = tk.Toplevel()
     t.title("Add Student")
@@ -115,29 +116,27 @@ class View:
     lastentry.pack(side=tk.LEFT, fill="both", expand=True)
     
     button = tk.Button(t, text="Enter", width=10) 
-    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: self.addStudent(fentry.get(), lentry.get()))
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: addStudent(fentry.get(), lentry.get()))
     button.pack(side=tk.BOTTOM)
     
-  def addStudent(self, first, last):  
-    self.controller.addStudent(first, last)
-    print(first, last)
-    print(self.controller.getCount())
-    val = self.controller.getCount()
-    if(val > 0):
-      for x in range(0,val):
+    def addStudent(first, last):  
+      self.controller.addStudent(first, last)
+      val = self.controller.getCount()
+      if(val > 0):
         for y in range(0,5):
           if(y==0):
             txt = first
           elif(y==1):
             txt = last
           elif(y==2):
-            txt = "Blank"
+            txt = 100
           elif(y==3):
             txt = "Blank"
           elif(y==4):
             txt = "Blank"
           cell=tk.Label(self.tableframe, text=txt, fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
-          cell.grid(row=x+1,column=y)
+          cell.grid(row=val+1,column=y)
+      t.destroy()
 
 if __name__ == "__main__":
   view = View(NotAController())
