@@ -97,21 +97,30 @@ class View:
   def updateStudentsPopup(self):
     t = tk.Toplevel()
     t.title("Add Student")
+    
+    fentry = tk.StringVar()
+    lentry = tk.StringVar()
+    
     first = tk.Label(t, text = "First name:")
     first.pack(side=tk.LEFT, fill="both", expand=True)
-    firstentry = tk.Entry(t)
+    
+    firstentry = tk.Entry(t, textvariable = fentry)
+    firstentry.focus_set()
     firstentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
     last = tk.Label(t, text = "Last name:")
     last.pack(side=tk.LEFT, fill="both", expand=True)
-    lastentry = tk.Entry(t)
+    
+    lastentry = tk.Entry(t, textvariable = lentry)
     lastentry.pack(side=tk.LEFT, fill="both", expand=True)
     
     button = tk.Button(t, text="Enter", width=10) 
-    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: self.addStudent(firstentry.get, lastentry.get))
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: self.addStudent(fentry.get(), lentry.get()))
     button.pack(side=tk.BOTTOM)
     
   def addStudent(self, first, last):  
     self.controller.addStudent(first, last)
+    print(first, last)
     print(self.controller.getCount())
     val = self.controller.getCount()
     if(val > 0):
