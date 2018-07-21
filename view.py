@@ -51,25 +51,25 @@ class View:
     root.config(menu=menubar)
     
     #Building the table
-    tableframe = tk.Frame(root)
-    tableframe.pack(side=tk.TOP, fill=tk.X)
+    self.tableframe = tk.Frame(root)
+    self.tableframe.pack(side=tk.TOP, fill=tk.X)
     
-    last=tk.Label(tableframe, text='LAST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
+    last=tk.Label(self.tableframe, text='LAST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
     last.grid(row=0,column=0)
-    first=tk.Label(tableframe, text='FIRST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
+    first=tk.Label(self.tableframe, text='FIRST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
     first.grid(row=0,column=1)
-    grade=tk.Label(tableframe, text='GRADE', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
+    grade=tk.Label(self.tableframe, text='GRADE', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
     grade.grid(row=0,column=2)
-    comments=tk.Label(tableframe, text='COMMENTS', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
+    comments=tk.Label(self.tableframe, text='COMMENTS', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
     comments.grid(row=0,column=3)
-    partner=tk.Label(tableframe, text='PARTNER', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
+    partner=tk.Label(self.tableframe, text='PARTNER', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
     partner.grid(row=0,column=4)
 
     val = self.controller.getCount()
     if(val > 0):
       for x in range(1,val):
         for y in range(0,5):
-          cell=tk.Label(tableframe, text='BLANK', fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
+          cell=tk.Label(self.tableframe, text='BLANK', fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
           cell.grid(row=x,column=y)
 
     #Frame to hold the bottom buttons
@@ -79,7 +79,7 @@ class View:
     
     #Update Students button
     button = tk.Button(buttonFrame, text="Update Students", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.controller.addStudent)
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.updateStudentsPopup)
     button.pack(side=tk.LEFT)
     #Update Comments button
     button = tk.Button(buttonFrame, text="Update Comments", width=15) 
@@ -93,6 +93,42 @@ class View:
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.dummy)
     button.pack(side=tk.LEFT)
+    
+  def updateStudentsPopup(self):
+    t = tk.Toplevel()
+    t.title("Add Student")
+    first = tk.Label(t, text = "First name:")
+    first.pack(side=tk.LEFT, fill="both", expand=True)
+    firstentry = tk.Entry(t)
+    firstentry.pack(side=tk.LEFT, fill="both", expand=True)
+    last = tk.Label(t, text = "Last name:")
+    last.pack(side=tk.LEFT, fill="both", expand=True)
+    lastentry = tk.Entry(t)
+    lastentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    button = tk.Button(t, text="Enter", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: self.addStudent(firstentry.get, lastentry.get))
+    button.pack(side=tk.BOTTOM)
+    
+  def addStudent(self, first, last):  
+    self.controller.addStudent(first, last)
+    print(self.controller.getCount())
+    val = self.controller.getCount()
+    if(val > 0):
+      for x in range(0,val):
+        for y in range(0,5):
+          if(y==0):
+            txt = first
+          elif(y==1):
+            txt = last
+          elif(y==2):
+            txt = "Blank"
+          elif(y==3):
+            txt = "Blank"
+          elif(y==4):
+            txt = "Blank"
+          cell=tk.Label(self.tableframe, text=txt, fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
+          cell.grid(row=x+1,column=y)
 
 if __name__ == "__main__":
   view = View(NotAController())

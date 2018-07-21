@@ -9,7 +9,7 @@ class Controller(object):
     self.view = view.View(self)
     tk.mainloop()
     
-  def addStudent(self): self.model.addStudent("John", "Doe")
+  def addStudent(self, first, last): self.model.addStudent(first, last)
   def getCount(self): return self.model.getCount()
   def dummy(self): print("dummy button")
 
