@@ -1,6 +1,8 @@
-import sys
+import sys, os
 import tkinter as tk
 from tkinter import Menu
+from tkinter import filedialog
+import gradesheet
 
 GEOMETRY = '1060x640+200+10'
 WIDTH=120
@@ -12,13 +14,15 @@ class NotAController:
   def dummy(self): print("dummy button")
 
 class View:
-  def __init__(self, controller):
+  def __init__(self, controller, colNames, sheet):
     self.controller = controller
+    self.columnNames = colNames
+    self.gradeSheet = sheet
     root = tk.Tk()
     root.title('Grader')
     root.geometry(GEOMETRY)
     
-    self.count = 0
+    self.filename='New Sheet'
     self.boxFont = ('symbol', 14)
     
     #Creating top menu bar
@@ -26,7 +30,7 @@ class View:
     #File menu
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="New", command=self.controller.dummy)
-    filemenu.add_command(label="Open", command=self.controller.dummy)
+    filemenu.add_command(label="Open", command=self.loadGrades)#self.openFile
     filemenu.add_separator()
     filemenu.add_command(label="Save", command=self.controller.dummy)
     filemenu.add_command(label="Save As", command=self.controller.dummy)
@@ -51,35 +55,20 @@ class View:
     root.config(menu=menubar)
     
     #Building the table
-    self.tableframe = tk.Frame(root)
-    self.tableframe.pack(side=tk.TOP, fill=tk.X)
-    
-    last=tk.Label(self.tableframe, text='LAST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
-    last.grid(row=0,column=0)
-    first=tk.Label(self.tableframe, text='FIRST', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
-    first.grid(row=0,column=1)
-    grade=tk.Label(self.tableframe, text='GRADE', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
-    grade.grid(row=0,column=2)
-    comments=tk.Label(self.tableframe, text='COMMENTS', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
-    comments.grid(row=0,column=3)
-    partner=tk.Label(self.tableframe, text='PARTNER', fg='black', bg='#66a0ff', width=10, bd=2, relief=tk.SUNKEN)
-    partner.grid(row=0,column=4)
-
-    val = self.controller.getCount()
-    if(val > 0):
-      for x in range(1,val):
-        for y in range(0,5):
-          cell=tk.Label(self.tableframe, text='BLANK', fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
-          cell.grid(row=x,column=y)
+    self.gradesheet = gradesheet.GradeSheet(root, self, self.columnNames, self.gradeSheet, width=100, height=20, wrap="none") 
+    if len(self.gradeSheet) == 0:
+      self.gradesheet.eraseSheet()
+    else:
+      dirPath = sys.argv[1]
+      tempName = dirPath.split(os.sep)
+      tempName = tempName[-1]
+      tempName = tempName.split('.')
+      self.gradeLabel.config(text = tempName[-2], fg='#0000ff', font=self.myFont)
 
     #Frame to hold the bottom buttons
     buttonFrame = tk.Frame(root)
     buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
     buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
-    
-    ####################JUMP BACK IN HERE##################################
-    #yscrollbar = Scrollbar(frame)
-    #yscrollbar.grid(row=0, column=5, sticky=N+S)
     
     #Update Students button
     button = tk.Button(buttonFrame, text="Update Students", width=15) 
@@ -97,6 +86,10 @@ class View:
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.dummy)
     button.pack(side=tk.LEFT)
+    
+    self.namelabel = tk.Label(buttonFrame, text=self.filename, width=15, relief=tk.SUNKEN) 
+    self.namelabel.config(padx=2, pady=2, bd=2, bg="#ffffff")
+    self.namelabel.pack(side=tk.RIGHT)
 
 #Window for adding/removing students from the table
   def updateStudentsPopup(self):
@@ -140,7 +133,45 @@ class View:
             txt = "Blank"
           cell=tk.Label(self.tableframe, text=txt, fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
           cell.grid(row=val+1,column=y)
-      t.destroy()
+      t.destroy()    
+    
+  def loadGrades(self):
+    self.filename = filedialog.askopenfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose a file")
+    self.columnNames, self.gradeSheet = self.controller.loadGrades(self.filename)
+    self.newView(self.columnNames, self.gradeSheet)
+    self.namelabel.config(text=self.filename.rsplit('/')[-1])
+      
+#$########################copied##############################
+  def saveGrades(self):
+    if len(self.gradeSheet) == 0:
+      tkMessageBox.showinfo('Oops!', 'Nothing to save.')
+      return
+    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
+    self.control.saveGrades(self.columnNames, self.gradeSheet)
+    filename = self.control.getFilename()
+    self.saveCompleted(filename)
+    
+  
+
+  def newView(self, columns, grades):
+    self.columnNames = columns
+    self.gradeSheet = grades
+    self.gradesheet.eraseSheet()
+    self.gradesheet.makeNewSheet(self.columnNames, self.gradeSheet)
+
+  def saveAs(self):
+    self.notYet()
+    return
+    if len(self.gradeSheet) == 0:
+      tkMessageBox.showinfo('Oops!', 'Nothing to save.')
+      return
+    filename = tkFileDialog.asksaveasfilename(**self.fileOpt)
+    if not filename:
+      return
+    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
+    self.control.saveGradesAs(self.columnNames, self.gradeSheet, filename)
+    self.saveCompleted(filename)
+    #####################################################33
 
 if __name__ == "__main__":
   view = View(NotAController())
