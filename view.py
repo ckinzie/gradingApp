@@ -2,6 +2,7 @@ import sys, os
 import tkinter as tk
 from tkinter import Menu
 from tkinter import filedialog
+from tkinter import messagebox
 import gradesheet
 
 GEOMETRY = '1060x640+200+10'
@@ -33,7 +34,7 @@ class View:
     filemenu.add_command(label="Open", command=self.loadGrades)#self.openFile
     filemenu.add_separator()
     filemenu.add_command(label="Save", command=self.controller.dummy)
-    filemenu.add_command(label="Save As", command=self.controller.dummy)
+    filemenu.add_command(label="Save As", command=self.saveAs)
     filemenu.add_separator()
     filemenu.add_command(label="Quit", command=root.quit)
     menubar.add_cascade(label="File", menu=filemenu)
@@ -133,45 +134,57 @@ class View:
             txt = "Blank"
           cell=tk.Label(self.tableframe, text=txt, fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
           cell.grid(row=val+1,column=y)
-      t.destroy()    
-    
-  def loadGrades(self):
-    self.filename = filedialog.askopenfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose a file")
-    self.columnNames, self.gradeSheet = self.controller.loadGrades(self.filename)
-    self.newView(self.columnNames, self.gradeSheet)
-    self.namelabel.config(text=self.filename.rsplit('/')[-1])
-      
-#$########################copied##############################
-  def saveGrades(self):
-    if len(self.gradeSheet) == 0:
-      tkMessageBox.showinfo('Oops!', 'Nothing to save.')
-      return
-    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
-    self.control.saveGrades(self.columnNames, self.gradeSheet)
-    filename = self.control.getFilename()
-    self.saveCompleted(filename)
-    
+      t.destroy() 
   
-
   def newView(self, columns, grades):
     self.columnNames = columns
     self.gradeSheet = grades
     self.gradesheet.eraseSheet()
     self.gradesheet.makeNewSheet(self.columnNames, self.gradeSheet)
-
-  def saveAs(self):
-    self.notYet()
-    return
-    if len(self.gradeSheet) == 0:
-      tkMessageBox.showinfo('Oops!', 'Nothing to save.')
+    
+  def loadGrades(self):
+    self.filename = filedialog.askopenfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose a file")
+    if not self.filename:
       return
-    filename = tkFileDialog.asksaveasfilename(**self.fileOpt)
+    colNames, gs = self.controller.loadGrades(self.filename)
+    if(colNames != "Error"):
+      self.columnNames = colNames
+      self.gradeSheet = gs 
+      self.newView(self.columnNames, self.gradeSheet)
+      self.namelabel.config(text=self.filename.rsplit('/')[-1])
+    
+  def saveAs(self):
+    if len(self.gradeSheet) == 0:
+      messagebox.showinfo('Oops!', 'Nothing to save.')
+      return
+    filename = filedialog.asksaveasfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose location to save")
     if not filename:
       return
-    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
-    self.control.saveGradesAs(self.columnNames, self.gradeSheet, filename)
+    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet()
+    filename = filename.rsplit('.')[0] + ".xml"
+    self.controller.saveGradesAs(self.columnNames, self.gradeSheet, filename)
     self.saveCompleted(filename)
-    #####################################################33
+      
+##########################copied##############################
+  def saveGrades(self):
+    if len(self.gradeSheet) == 0:
+      messagebox.showinfo('Oops!', 'Nothing to save.')
+      return
+    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
+    self.controller.saveGrades(self.columnNames, self.gradeSheet)
+    filename = self.controller.getFilename()
+    self.saveCompleted(filename)
+################################################################
+    
+  def openFileError(self):
+    messagebox.showwarning('ERROR', 'Could not open selected file')
+  
+  def saveCompleted(self, filename):
+    self.filename = filename
+    filename = filename.split('/')[-1]
+    msg = "Grades saved to: " + filename
+    messagebox.showinfo('Success',msg)
+    self.namelabel.config(text=self.filename.rsplit('/')[-1])
 
 if __name__ == "__main__":
   view = View(NotAController())

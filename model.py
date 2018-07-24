@@ -37,10 +37,11 @@ class Model(object):
       parser.parse(filename)
       self.columnNames = collector.getColumnNames()
       self.gradeSheet = collector.getGradeSheet()
+      return ("Success")
     except (IOError):
-      print ("Error reading file", filename,)
+      return ("Error reading file " + filename,)
     except (xml.sax.SAXParseException):
-      print ("Error parsing", filename)
+      return ("Error parsing " + filename)
 
   def generateDefaultSheet(self, numberRows, numberCols):
     for col in range(numberCols):
@@ -50,7 +51,6 @@ class Model(object):
       for col in range(numberCols):
         t.append('('+str(row)+', '+str(col)+')')
       self.gradeSheet.append( list(t) )
-    #print self.gradeSheet
 
   def getColumnNames(self):
     return self.columnNames

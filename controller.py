@@ -23,19 +23,24 @@ class Controller(object):
     self.model.setGradeSheet(self.columnNames, self.gradeSheet)
     self.model.saveGrades(self.filename)
 
+  def saveGradesAs(self, cols, gs, filename):
+    self.columnNames, self.gradeSheet = cols, gs
+    self.filename = filename
+    self.model.setGradeSheet(self.columnNames, self.gradeSheet)
+    self.model.saveGrades(self.filename)
+
   def loadGrades(self, filename):
     self.filename = filename
-    self.model.loadGrades(self.filename)
+    if (self.model.loadGrades(self.filename) != "Success"):
+      self.view.openFileError()
+      return ("Error", "Error")
     self.columnNames, self.gradeSheet = self.model.getGradeSheet()
     return self.columnNames, self.gradeSheet
     
   def getFilename(self):
     return self.filename
 
-  def saveGradesAs(self, cols, gs, filename):
-    self.columnNames, self.gradeSheet = cols, gs
-    self.model.setGradeSheet(self.columnNames, self.gradeSheet)
-    self.model.saveGrades(filename)
+  
   #####################################################################
 
 if __name__ == "__main__":
