@@ -5,7 +5,7 @@ import xmlCollector
 
 class Model(object):
   def __init__(self):
-    self.columnNames = []
+    self.columnNames = ["Last Name", "First Name", "Grade", "Comments", "Partner"]
     self.gradeSheet = []
 
 #############copied################333
@@ -55,12 +55,11 @@ class Model(object):
   def getColumnNames(self):
     return self.columnNames
 
-  def setGradeSheet(self, cols, gs):
-    self.columnNames = cols
+  def setGradeSheet(self, gs):
     self.gradeSheet = gs
 
   def getGradeSheet(self):
-    return self.columnNames, self.gradeSheet
+    return self.gradeSheet
 
 
 

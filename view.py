@@ -15,9 +15,8 @@ class NotAController:
   def dummy(self): print("dummy button")
 
 class View:
-  def __init__(self, controller, colNames, sheet):
+  def __init__(self, controller, sheet):
     self.controller = controller
-    self.columnNames = colNames
     self.gradeSheet = sheet
     root = tk.Tk()
     root.title('Grader')
@@ -56,7 +55,7 @@ class View:
     root.config(menu=menubar)
     
     #Building the table
-    self.gradesheet = gradesheet.GradeSheet(root, self, self.columnNames, self.gradeSheet, width=100, height=20, wrap="none") 
+    self.gradesheet = gradesheet.GradeSheet(root, self, self.gradeSheet, width=100, height=20, wrap="none") 
     if len(self.gradeSheet) == 0:
       self.gradesheet.eraseSheet()
     else:
@@ -71,12 +70,12 @@ class View:
     buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
     buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
     
-    #Update Students button
-    button = tk.Button(buttonFrame, text="Update Students", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.updateStudentsPopup)
+    #Manage Students button
+    button = tk.Button(buttonFrame, text="Manage Students", width=15) 
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.manageStudentsPopup)
     button.pack(side=tk.LEFT)
-    #Update Comments button
-    button = tk.Button(buttonFrame, text="Update Comments", width=15) 
+    #Manage Comments button
+    button = tk.Button(buttonFrame, text="Manage Comments", width=15) 
     button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.controller.dummy)
     button.pack(side=tk.LEFT)
     #Add Tab button
@@ -93,7 +92,50 @@ class View:
     self.namelabel.pack(side=tk.RIGHT)
 
 #Window for adding/removing students from the table
-  def updateStudentsPopup(self):
+  def manageStudentsPopup(self):
+    t = tk.Toplevel()
+    t.title("Manage Students")
+    
+    scrollbar = tk.Scrollbar(t)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    listbox = tk.Listbox(t, selectmode=tk.SINGLE)
+    listbox.pack(side="top", fill="both", expand=True)
+    
+    students = self.controller.getStudents()
+    for s in students:
+      listbox.insert(tk.END, s)
+    
+    #edit this function###############################
+    def selected(self, event):
+      widget = event.widget
+      selection=widget.curselection()
+      print("SELECTION:", selection)
+      value = widget.get(selection[0])
+      print( "Value is", value )
+    listbox.bind("<<ListboxSelect>>", selected)
+
+    
+    buttonFrame = tk.Frame(t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    button = tk.Button(buttonFrame, text="Add Student", width=12) 
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addStudentPopup)
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Delete Student", width=12) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000")
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Exit", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
+    button.pack(side=tk.RIGHT)
+    
+    listbox.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=listbox.yview)
+  
+  def addStudentPopup(self):
     t = tk.Toplevel()
     t.title("Add Student")
     
@@ -136,21 +178,19 @@ class View:
           cell.grid(row=val+1,column=y)
       t.destroy() 
   
-  def newView(self, columns, grades):
-    self.columnNames = columns
+  def newView(self, grades):
     self.gradeSheet = grades
     self.gradesheet.eraseSheet()
-    self.gradesheet.makeNewSheet(self.columnNames, self.gradeSheet)
+    self.gradesheet.makeNewSheet(self.gradeSheet)
     
   def loadGrades(self):
     self.filename = filedialog.askopenfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose a file")
     if not self.filename:
       return
-    colNames, gs = self.controller.loadGrades(self.filename)
-    if(colNames != "Error"):
-      self.columnNames = colNames
+    gs = self.controller.loadGrades(self.filename)
+    if(gs != "Error"):
       self.gradeSheet = gs 
-      self.newView(self.columnNames, self.gradeSheet)
+      self.newView(self.gradeSheet)
       self.namelabel.config(text=self.filename.rsplit('/')[-1])
     
   def saveAs(self):
@@ -160,9 +200,9 @@ class View:
     filename = filedialog.asksaveasfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose location to save")
     if not filename:
       return
-    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet()
+    self.gradeSheet = self.gradesheet.getGradeSheet()
     filename = filename.rsplit('.')[0] + ".xml"
-    self.controller.saveGradesAs(self.columnNames, self.gradeSheet, filename)
+    self.controller.saveGradesAs(self.gradeSheet, filename)
     self.saveCompleted(filename)
       
 ##########################copied##############################
@@ -170,8 +210,8 @@ class View:
     if len(self.gradeSheet) == 0:
       messagebox.showinfo('Oops!', 'Nothing to save.')
       return
-    self.columnNames, self.gradeSheet = self.gradesheet.getGradeSheet() 
-    self.controller.saveGrades(self.columnNames, self.gradeSheet)
+    self.gradeSheet = self.gradesheet.getGradeSheet() 
+    self.controller.saveGrades(self.gradeSheet)
     filename = self.controller.getFilename()
     self.saveCompleted(filename)
 ################################################################
