@@ -11,19 +11,19 @@ class XmlCollector( xml.sax.ContentHandler ):
 
   def __init__(self):
     xml.sax.ContentHandler.__init__(self)
-    self.columnNames = []
-    # It's easier here to use an OrderedDict, which is a 
-    # dictionary that maintains the original order.
-    # I convert it to a list when getGradeSheet is called:
+    self.names = []
+    self.grades = []
+    self.comments = []
+    self.partners = []
+    
     self.students = collections.OrderedDict()
     self.currentStudentName = None
-    self.columnNameFound = False
     self.nameFound = False
     self.gradeFound = False
-    self.hashFound = False
+    self.commentsFound = False
+    self.partnerFound = False
 
   def getGradeSheet(self):
-    ''' Looks like I'm turning the OrderedDict into a List: '''
     L = []
     t = []
     for x in self.students:
@@ -34,37 +34,35 @@ class XmlCollector( xml.sax.ContentHandler ):
   def getStudents(self):
     return self.students
 
-  def getColumnNames(self):
-    return self.columnNames
-
   def startElement( self, name, attributes ):
-    if name == 'ColumnName':
-      self.columnNameFound = True
-    elif name == 'Name':
+    if name == 'Last':
       self.nameFound = True
-    elif name == 'grade':
+    elif name == 'Grade':
       self.gradeFound = True
-    elif name == 'Hash':
-      self.hashFound = True
+    elif name == 'Comments':
+      self.commentsFound = True
+    elif name == 'Partner':
+      self.partnerFound = True
 
   def endElement( self, name ) :
-    self.columnNameFound = False
     self.nameFound = False
     self.gradeFound = False
+    self.commentsFound = False
+    self.partnerFound = False
 
   def characters( self, content ) :
     # strip only removes spaces!
     content = content.strip()
     content = str(content)  # convert unicode to ascii
     if content: 
-      if self.columnNameFound:
-        self.columnNames.append(content)
-      elif self.nameFound:
+      if self.nameFound:
         self.students[content] = []
         self.currentStudentName = content
       elif self.gradeFound:
         self.students[self.currentStudentName].append(content)
-      elif self.hashFound:
+      elif self.commentsFound:
+        self.students[self.currentStudentName].append(content)
+      elif self.partnerFound:
         self.students[self.currentStudentName].append(content)
 
 def main(filename):
@@ -73,8 +71,6 @@ def main(filename):
     collector = XmlCollector()
     parser.setContentHandler( collector )
     parser.parse(filename)
-    columnNames = collector.getColumnNames()
-    print ('Column names:', columnNames)
     print (collector.getGradeSheet())
   except (IOError):
     print ("Error reading file")

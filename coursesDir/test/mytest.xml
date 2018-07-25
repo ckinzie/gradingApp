@@ -1,0 +1,23 @@
+<?xml version = "1.0"?>
+<GradeSheet>
+  <Last>Smith, Joe</Last>
+    <Grade>101</Grade>
+    <Comments>None</Comments>
+    <Partner>None</Partner>
+  <Last>Martin, Sam</Last>
+    <Grade>93</Grade>
+    <Comments>None</Comments>
+    <Partner>Mike</Partner>
+  <Last>Williams, Mike</Last>
+    <Grade>14</Grade>
+    <Comments>None</Comments>
+    <Partner>Sam</Partner>
+  <Last>Watson, Herold</Last>
+    <Grade>0</Grade>
+    <Comments>None</Comments>
+    <Partner>None</Partner>
+  <Last>Johnson, Aaron</Last>
+    <Grade>67</Grade>
+    <Comments>None</Comments>
+    <Partner>None</Partner>
+</GradeSheet>

@@ -10,7 +10,7 @@ class GradeSheet(object):
   def __init__(self, parent, theView, gs, **keywords): 
     self.parent = parent
     self.myView = theView
-    self.columnNames = ["Last Name", "First Name", "Grade", "Comments", "Partner"]
+    self.columnNames = ["Name", "Grade", "Comments", "Partner"]
     self.gradeSheet = gs
 
     # self.gradesVarList is a list of the StringVar's in the Entry boxes
@@ -273,7 +273,7 @@ class GradeSheet(object):
     for row in self.gradeSheet: 
       rowParity ^= True
       t = []
-      for count in range(1, len(row)): 
+      for count in range(0, len(row)): 
         sv = tk.StringVar()
         sv.set(row[count])
         t.append(sv)

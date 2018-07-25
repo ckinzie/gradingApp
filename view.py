@@ -29,10 +29,10 @@ class View:
     menubar = Menu(root)
     #File menu
     filemenu = Menu(menubar, tearoff=0)
-    filemenu.add_command(label="New", command=self.controller.dummy)
-    filemenu.add_command(label="Open", command=self.loadGrades)#self.openFile
+    filemenu.add_command(label="New", command=self.newSheet)
+    filemenu.add_command(label="Open", command=self.loadGrades)
     filemenu.add_separator()
-    filemenu.add_command(label="Save", command=self.controller.dummy)
+    filemenu.add_command(label="Save", command=self.saveGrades)
     filemenu.add_command(label="Save As", command=self.saveAs)
     filemenu.add_separator()
     filemenu.add_command(label="Quit", command=root.quit)
@@ -105,17 +105,7 @@ class View:
     students = self.controller.getStudents()
     for s in students:
       listbox.insert(tk.END, s)
-    
-    #edit this function###############################
-    def selected(self, event):
-      widget = event.widget
-      selection=widget.curselection()
-      print("SELECTION:", selection)
-      value = widget.get(selection[0])
-      print( "Value is", value )
-    listbox.bind("<<ListboxSelect>>", selected)
-
-    
+       
     buttonFrame = tk.Frame(t)
     buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
     buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
@@ -124,7 +114,7 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addStudentPopup)
     button.pack(side=tk.LEFT)
     
-    button = tk.Button(buttonFrame, text="Delete Student", width=12) 
+    button = tk.Button(buttonFrame, text="Delete Student", width=12, command=lambda: self.deleteStudent(listbox.get(listbox.curselection()))) 
     button.config(padx=5, pady=5, bd=5, bg="#ff0000")
     button.pack(side=tk.LEFT)
     
@@ -160,23 +150,12 @@ class View:
     button.pack(side=tk.BOTTOM)
     
     def addStudent(first, last):  
-      self.controller.addStudent(first, last)
-      val = self.controller.getCount()
-      if(val > 0):
-        for y in range(0,5):
-          if(y==0):
-            txt = first
-          elif(y==1):
-            txt = last
-          elif(y==2):
-            txt = 100
-          elif(y==3):
-            txt = "Blank"
-          elif(y==4):
-            txt = "Blank"
-          cell=tk.Label(self.tableframe, text=txt, fg='black', bg='white', width=10, bd=2, relief=tk.SUNKEN)
-          cell.grid(row=val+1,column=y)
-      t.destroy() 
+      self.controller.addStudent(last + ", " + first)
+      t.destroy()
+   
+  def deleteStudent(self, student):
+    print("delete: " + str(student))
+    #self.controller.deleteStudent(student)
   
   def newView(self, grades):
     self.gradeSheet = grades
@@ -192,6 +171,12 @@ class View:
       self.gradeSheet = gs 
       self.newView(self.gradeSheet)
       self.namelabel.config(text=self.filename.rsplit('/')[-1])
+  
+  def newSheet(self):
+    self.controller.newSheet()
+    self.gradeSheet = []
+    self.newView(self.gradeSheet)
+    self.namelabel.config(text="New Sheet")
     
   def saveAs(self):
     if len(self.gradeSheet) == 0:
@@ -205,7 +190,6 @@ class View:
     self.controller.saveGradesAs(self.gradeSheet, filename)
     self.saveCompleted(filename)
       
-##########################copied##############################
   def saveGrades(self):
     if len(self.gradeSheet) == 0:
       messagebox.showinfo('Oops!', 'Nothing to save.')
@@ -214,7 +198,6 @@ class View:
     self.controller.saveGrades(self.gradeSheet)
     filename = self.controller.getFilename()
     self.saveCompleted(filename)
-################################################################
     
   def openFileError(self):
     messagebox.showwarning('ERROR', 'Could not open selected file')

@@ -13,9 +13,13 @@ class Controller(object):
     self.view = view.View(self, self.gradeSheet)
     tk.mainloop()
     
-  def addStudent(self, first, last): self.model.addStudent(first, last)
-  def getCount(self): return self.model.getCount()
+  def addStudent(self, name):
+    self.model.addStudent(name)
   def dummy(self): print("dummy button")
+
+  def newSheet(self):
+    self.gradeSheet = []
+    self.model.newSheet()
 
   def saveGrades(self, gs):
     self.gradeSheet = gs
@@ -42,8 +46,11 @@ class Controller(object):
   def getStudents(self):
     students = []
     for s in self.gradeSheet:
-      students.append(s[0] + " " + s[1])
+      students.append(s[0])
     return students
+  
+  def deleteStudent(self, student):
+    self.gradeSheet.deleteName(student)
 
 if __name__ == "__main__":
   controller = Controller()

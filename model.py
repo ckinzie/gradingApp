@@ -29,13 +29,15 @@ class Model(object):
     output.write("</"+elName+">\n")
 ##################################################
 
+  def addStudent(self, name):
+    print("add student: " + name)
+
   def loadGrades(self, filename):
     try:
       parser = xml.sax.make_parser()
       collector = xmlCollector.XmlCollector()
       parser.setContentHandler( collector )
       parser.parse(filename)
-      self.columnNames = collector.getColumnNames()
       self.gradeSheet = collector.getGradeSheet()
       return ("Success")
     except (IOError):
@@ -60,8 +62,9 @@ class Model(object):
 
   def getGradeSheet(self):
     return self.gradeSheet
-
-
+  
+  def newSheet(self):
+    self.gradeSheet = []
 
 if __name__ == "__main__":
   model = Model()
