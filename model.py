@@ -18,6 +18,7 @@ class Model(object):
       self.writeXmlElement(output, '    ', 'Grade', x[1])
       self.writeXmlElement(output, '    ', 'Comments', x[2])
       self.writeXmlElement(output, '    ', 'Partner', x[3])
+    output.write("\n")
     for c in self.comments:
       self.writeXmlElement(output, '  ', 'Note', c[0])
       self.writeXmlElement(output, '    ', 'Value', c[1])
@@ -68,6 +69,9 @@ class Model(object):
     t = [note, value]
     self.comments.append(list(t))
   
+  def deleteComment(self, index):
+    del self.comments[index]
+
   def newSheet(self):
     self.gradeSheet = []
 

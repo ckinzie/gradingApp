@@ -24,10 +24,11 @@
     <Grade>100</Grade>
     <Comments>None</Comments>
     <Partner>Mike</Partner>
+
   <Note>thing1</Note>
     <Value>5</Value>
-  <Note>thing2</Note>
+  <Note>another thing</Note>
     <Value>10</Value>
-  <Note>thing3</Note>
-    <Value>1</Value>
+  <Note>another another thing</Note>
+    <Value>2</Value>
 </GradeSheet>

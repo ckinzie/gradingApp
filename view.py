@@ -10,8 +10,6 @@ WIDTH=120
 HEIGHT=19
 
 class NotAController:
-  def addStudent(self): self.model.addStudent("John", "Doe")
-  def getCount(self): return self.model.getCount
   def dummy(self): print("dummy button")
 
 class View:
@@ -90,7 +88,7 @@ class View:
     self.namelabel = tk.Label(buttonFrame, text=self.filename, width=15, relief=tk.SUNKEN) 
     self.namelabel.config(padx=2, pady=2, bd=2, bg="#ffffff")
     self.namelabel.pack(side=tk.RIGHT)
-
+  #Window for adding/removing comments from the table
   def manageCommentsPopup(self):
     t = tk.Toplevel()
     t.title("Manage Comments")
@@ -152,15 +150,52 @@ class View:
       comment = "(-" + value + ") " + note
       self.controller.addComment(value, note)
       self.gradeSheet = self.gradesheet.getGradeSheet()
-      #self.controller.updateRoster(self.gradeSheet)
       self.commentslistbox.insert(tk.END, comment)
       t.destroy()
    
   def deleteComment(self):
-    comment = self.commentlistbox.get(self.commentlistbox.curselection())
-    self.commentlistbox.delete(self.commentlistbox.curselection())
-    self.gradesheet.deleteComment(comment)
+    comment = self.commentslistbox.curselection()[0]
+    self.commentslistbox.delete(self.commentslistbox.curselection())
+    self.controller.deleteComment(comment)
+    
+  #Window for applying comments to a specific grade
+  def applyCommentsPopup(self, index):
+    t = tk.Toplevel()
+    t.title("Apply Comments")
 
+    chkboxFrame = tk.Frame(t)
+    chkboxFrame.config(padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    comments = self.controller.getComments()
+    variables = []
+    for c in comments:
+      var = tk.IntVar()
+      chkbutton = tk.Checkbutton(chkboxFrame, text="(-" + c[1] + ") " + c[0], variable=var)
+      chkbutton.pack(side=tk.TOP, fill = tk.BOTH)
+      variables.append(var)
+    chkboxFrame.pack(side=tk.TOP, fill=tk.BOTH)
+       
+    buttonFrame = tk.Frame(t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    def updateComments():
+      count = 0
+      c = []
+      for var in variables:
+        if (var.get() == 1):
+          c.append(count)
+        count+=1
+      self.gradeSheet[index][2] = c
+      t.destroy()
+    
+    button = tk.Button(buttonFrame, text="Apply", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=updateComments)
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Exit", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
+    button.pack(side=tk.RIGHT)
+      
   #Window for adding/removing students from the table
   def manageStudentsPopup(self):
     t = tk.Toplevel()
@@ -268,7 +303,7 @@ class View:
     if (self.controller.getFilename() == None):
       self.saveAs()
       return
-    self.gradeSheet = self.gradesheet.getGradeSheet() 
+    self.gradeSheet = self.gradesheet.getGradeSheet() ####THIS IS WHERE MY SAVING PROBLEM IS
     self.comments = self.controller.getComments()
     self.controller.saveGrades(self.gradeSheet, self.comments)
     filename = self.controller.getFilename()

@@ -154,14 +154,7 @@ class GradeSheet(object):
       self.columnVarList.append(sv)
       x=tk.Button(self.headText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
       x.config(bg='#ccffcc')
-      self.headText.window_create(tk.END, window=x) 
-
-  def printEntry(self, event):
-    #print "Value is:", event.widget.get()
-    #self.printGradesVarList()
-    # Move cursor to next widget:
-    event.widget.tk_focusNext().focus()
-    return("break")
+      self.headText.window_create(tk.END, window=x)
 
   def sortColumn(self, event, withNames=False):
     columnName = event.widget.get()
@@ -255,6 +248,11 @@ class GradeSheet(object):
   def makeSheet(self):
     L = []
     rowParity = True
+    rcount = 0
+    
+    def popup(val):
+      return lambda: self.myView.applyCommentsPopup(val)
+    
     for row in self.gradeSheet: 
       rowParity ^= True
       t = []
@@ -262,16 +260,17 @@ class GradeSheet(object):
         sv = tk.StringVar()
         sv.set(row[count])
         t.append(sv)
-        x=tk.Button(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
-        x.bind("<Return>", self.printEntry)
+        x=tk.Button(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN)
+        if count == 2:
+          x.config(command=popup(rcount))
         if rowParity:
           x.config(bg='#ffffcc')
         self.gradeText.window_create(tk.END, window=x) 
       L.append(t)
       if row != self.gradeSheet[-1]:
-        self.gradeText.insert(tk.END, "\n") 
+        self.gradeText.insert(tk.END, "\n")
+      rcount+=1
     self.gradesVarList = L
-    #self.debug()
 
   def getGradeSheet(self):
     L = []

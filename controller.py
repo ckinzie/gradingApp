@@ -61,6 +61,9 @@ class Controller(object):
   
   def addComment(self, value, note):
     self.model.addComment(value, note)
+  
+  def deleteComment(self, index):
+    self.model.deleteComment(index)
     
   def updateRoster(self, gs):
     self.model.setGradeSheet(gs)
