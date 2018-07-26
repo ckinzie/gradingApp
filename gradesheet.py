@@ -31,7 +31,7 @@ class GradeSheet(object):
     self.headFrame.pack(side=tk.TOP, expand=tk.TRUE, fill=tk.BOTH) 
 
     # Adding column headers
-    self.headText = tk.Text(self.headFrame, width=24, height=1)
+    self.headText = tk.Text(self.headFrame, width=24, height=2)
     
     # If wrap isn't set to NONE, the scrollbar won't work
     # because there's nothing to scroll!
@@ -91,7 +91,7 @@ class GradeSheet(object):
     self.namesVarList = []
     self.eraseView()
     self.makeSheetDisabled()
-    
+  
   def addStudent(self, name):
     self.makeSheetNormal()
     tempVars = []
@@ -103,13 +103,17 @@ class GradeSheet(object):
     tempVars.append(name)
     L[1] = '100'
     tempVars.append('100')
+    L[2] = 'None'
+    tempVars.append('None')
+    L[3] = 'None'
+    tempVars.append('None')
     
     self.gradesVarList.append(tempVars)
     self.gradeSheet.append(L)
     self.eraseView()
     self.makeNewSheet(self.gradeSheet)
     self.makeSheetDisabled()
-
+    
   def sortNames(self):
     self.makeSheetNormal()
     self.eraseView()
@@ -148,7 +152,7 @@ class GradeSheet(object):
       sv = tk.StringVar()
       sv.set(col)
       self.columnVarList.append(sv)
-      x=tk.Label(self.headText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
+      x=tk.Button(self.headText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
       x.config(bg='#ccffcc')
       self.headText.window_create(tk.END, window=x) 
 
@@ -224,20 +228,6 @@ class GradeSheet(object):
     outFile.close()
     tkMessageBox.showinfo('Names','Names saved to '+dirPath)
 
-  def printName(self, event):
-    if len(self.namesVarList) == 0:
-      self.mustLoadSheet()
-      return
-    searchName = event.widget.get()
-    count = 1
-    for name in self.namesVarList:
-      if name.get() == searchName:
-        # We fouond the target, now print it:
-        print (self.gradeSheet[count-1])
-        break
-      count += 1
-    self.notYet('print '+searchName)
-
   def deleteName(self, searchName):
     if len(self.namesVarList) == 0:
       self.mustLoadSheet()
@@ -272,7 +262,7 @@ class GradeSheet(object):
         sv = tk.StringVar()
         sv.set(row[count])
         t.append(sv)
-        x=tk.Label(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
+        x=tk.Button(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
         x.bind("<Return>", self.printEntry)
         if rowParity:
           x.config(bg='#ffffcc')
@@ -296,9 +286,6 @@ class GradeSheet(object):
 
   def mustLoadSheet(self):
     messagebox.showinfo('Oops', 'Must load grades')
-
-  def notYet(self, cmd):
-    messagebox.showinfo('Oops', cmd+'\nis not implemented Yet!')
 
   def successMessage(self, cmd, msg):
     messagebox.showinfo('Success', cmd+'\n'+msg)

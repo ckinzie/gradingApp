@@ -76,7 +76,7 @@ class View:
     button.pack(side=tk.LEFT)
     #Manage Comments button
     button = tk.Button(buttonFrame, text="Manage Comments", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.controller.dummy)
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.manageCommentsPopup)
     button.pack(side=tk.LEFT)
     #Add Tab button
     button = tk.Button(buttonFrame, text="Add Tab", width=15) 
@@ -91,7 +91,77 @@ class View:
     self.namelabel.config(padx=2, pady=2, bd=2, bg="#ffffff")
     self.namelabel.pack(side=tk.RIGHT)
 
-#Window for adding/removing students from the table
+  def manageCommentsPopup(self):
+    t = tk.Toplevel()
+    t.title("Manage Comments")
+    
+    scrollbar = tk.Scrollbar(t)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    self.commentslistbox = tk.Listbox(t, selectmode=tk.SINGLE)
+    self.commentslistbox.pack(side="top", fill="both", expand=True)
+    
+    comments = self.controller.getComments()
+    for c in comments:
+      self.commentslistbox.insert(tk.END, ("(-" + c[1] + ") " + c[0]))
+       
+    buttonFrame = tk.Frame(t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    button = tk.Button(buttonFrame, text="Add Comment", width=12) 
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addCommentPopup)
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Delete Comment", width=12, command=self.deleteComment)
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000")
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Exit", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
+    button.pack(side=tk.RIGHT)
+    
+    self.commentslistbox.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=self.commentslistbox.yview)
+    
+  def addCommentPopup(self):
+    t = tk.Toplevel()
+    t.title("Add Student")
+    
+    ventry = tk.StringVar()
+    nentry = tk.StringVar()
+    
+    value = tk.Label(t, text = "Value:")
+    value.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    valueentry = tk.Entry(t, textvariable = ventry, width=3)
+    valueentry.focus_set()
+    valueentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    note = tk.Label(t, text = "Comment:")
+    note.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    noteentry = tk.Entry(t, textvariable = nentry)
+    noteentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    button = tk.Button(t, text="Enter", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: addComment(ventry.get(), nentry.get()))
+    button.pack(side=tk.BOTTOM)
+    
+    def addComment(value, note):
+      comment = "(-" + value + ") " + note
+      self.controller.addComment(value, note)
+      self.gradeSheet = self.gradesheet.getGradeSheet()
+      #self.controller.updateRoster(self.gradeSheet)
+      self.commentslistbox.insert(tk.END, comment)
+      t.destroy()
+   
+  def deleteComment(self):
+    comment = self.commentlistbox.get(self.commentlistbox.curselection())
+    self.commentlistbox.delete(self.commentlistbox.curselection())
+    self.gradesheet.deleteComment(comment)
+
+  #Window for adding/removing students from the table
   def manageStudentsPopup(self):
     t = tk.Toplevel()
     t.title("Manage Students")
@@ -189,8 +259,9 @@ class View:
     if not filename:
       return
     self.gradeSheet = self.gradesheet.getGradeSheet()
+    self.comments = self.gradesheet.getComments()
     filename = filename.rsplit('.')[0] + ".xml"
-    self.controller.saveGradesAs(self.gradeSheet, filename)
+    self.controller.saveGradesAs(self.gradeSheet, self.comments, filename)
     self.saveCompleted(filename)
       
   def saveGrades(self):
@@ -198,7 +269,8 @@ class View:
       self.saveAs()
       return
     self.gradeSheet = self.gradesheet.getGradeSheet() 
-    self.controller.saveGrades(self.gradeSheet)
+    self.comments = self.controller.getComments()
+    self.controller.saveGrades(self.gradeSheet, self.comments)
     filename = self.controller.getFilename()
     self.saveCompleted(filename)
     

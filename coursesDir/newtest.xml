@@ -4,10 +4,6 @@
     <Grade>93</Grade>
     <Comments>None</Comments>
     <Partner>Mike</Partner>
-  <Name>Williams, Mike</Name>
-    <Grade>14</Grade>
-    <Comments>None</Comments>
-    <Partner>Sam</Partner>
   <Name>Watson, Herold</Name>
     <Grade>0</Grade>
     <Comments>None</Comments>
@@ -16,4 +12,22 @@
     <Grade>67</Grade>
     <Comments>None</Comments>
     <Partner>None</Partner>
+  <Name>Kinzie, Connor</Name>
+    <Grade>100</Grade>
+    <Comments>None</Comments>
+    <Partner>Mike</Partner>
+  <Name>Kinzie, Quinn</Name>
+    <Grade>100</Grade>
+    <Comments>None</Comments>
+    <Partner>Mike</Partner>
+  <Name>Williams, Ian</Name>
+    <Grade>100</Grade>
+    <Comments>None</Comments>
+    <Partner>Mike</Partner>
+  <Note>thing1</Note>
+    <Value>5</Value>
+  <Note>thing2</Note>
+    <Value>10</Value>
+  <Note>thing3</Note>
+    <Value>1</Value>
 </GradeSheet>

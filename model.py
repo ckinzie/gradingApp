@@ -7,6 +7,7 @@ class Model(object):
   def __init__(self):
     self.columnNames = ["Name", "Grade", "Comments", "Partner"]
     self.gradeSheet = []
+    self.comments = []
 
   def saveGrades(self, filename):
     output = open(filename, 'w')
@@ -17,6 +18,9 @@ class Model(object):
       self.writeXmlElement(output, '    ', 'Grade', x[1])
       self.writeXmlElement(output, '    ', 'Comments', x[2])
       self.writeXmlElement(output, '    ', 'Partner', x[3])
+    for c in self.comments:
+      self.writeXmlElement(output, '  ', 'Note', c[0])
+      self.writeXmlElement(output, '    ', 'Value', c[1])
     output.write("</GradeSheet>\n")
     output.close()
     
@@ -32,6 +36,7 @@ class Model(object):
       parser.setContentHandler( collector )
       parser.parse(filename)
       self.gradeSheet = collector.getGradeSheet()
+      self.comments = collector.getComments()
       return ("Success")
     except (IOError):
       return ("Error reading file " + filename,)
@@ -47,14 +52,21 @@ class Model(object):
         t.append('('+str(row)+', '+str(col)+')')
       self.gradeSheet.append( list(t) )
 
-  def getColumnNames(self):
-    return self.columnNames
-
   def setGradeSheet(self, gs):
     self.gradeSheet = gs
 
   def getGradeSheet(self):
     return self.gradeSheet
+  
+  def setComments(self, c):
+    self.comments = c
+  
+  def getComments(self):
+    return self.comments
+    
+  def addComment(self, value, note):
+    t = [note, value]
+    self.comments.append(list(t))
   
   def newSheet(self):
     self.gradeSheet = []

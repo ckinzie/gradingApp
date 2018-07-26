@@ -17,17 +17,29 @@ class XmlCollector( xml.sax.ContentHandler ):
     self.partners = []
     
     self.students = collections.OrderedDict()
+    self.commentList = collections.OrderedDict()
     self.currentStudentName = None
+    self.currentCommentName = None
     self.nameFound = False
     self.gradeFound = False
     self.commentsFound = False
     self.partnerFound = False
+    self.noteFound = False
+    self.valueFound = False
 
   def getGradeSheet(self):
     L = []
     t = []
     for x in self.students:
       t = [x]+self.students[x]
+      L.append(t)
+    return L
+    
+  def getComments(self):
+    L = []
+    t = []
+    for x in self.commentList:
+      t = [x]+self.commentList[x]
       L.append(t)
     return L
 
@@ -43,12 +55,18 @@ class XmlCollector( xml.sax.ContentHandler ):
       self.commentsFound = True
     elif name == 'Partner':
       self.partnerFound = True
+    elif name == 'Note':
+      self.noteFound = True
+    elif name == 'Value':
+      self.valueFound = True
 
   def endElement( self, name ) :
     self.nameFound = False
     self.gradeFound = False
     self.commentsFound = False
     self.partnerFound = False
+    self.noteFound = False
+    self.valueFound = False
 
   def characters( self, content ) :
     # strip only removes spaces!
@@ -64,6 +82,11 @@ class XmlCollector( xml.sax.ContentHandler ):
         self.students[self.currentStudentName].append(content)
       elif self.partnerFound:
         self.students[self.currentStudentName].append(content)
+      elif self.noteFound:
+        self.commentList[content] = []
+        self.currentComment = content
+      elif self.valueFound:
+        self.commentList[self.currentComment].append(content)
 
 def main(filename):
   try:

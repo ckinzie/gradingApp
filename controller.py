@@ -7,6 +7,7 @@ class Controller(object):
   def __init__(self):
     self.model = model.Model()
     self.gradeSheet = []
+    self.comments = []
     self.filename = None
     if len(sys.argv) == 2:
       self.gradeSheet = self.loadGrades(sys.argv[1])
@@ -19,15 +20,19 @@ class Controller(object):
     self.gradeSheet = []
     self.model.newSheet()
 
-  def saveGrades(self, gs):
+  def saveGrades(self, gs, c):
     self.gradeSheet = gs
+    self.comments = c
     self.model.setGradeSheet(self.gradeSheet)
+    self.model.setComments(self.comments)
     self.model.saveGrades(self.filename)
 
-  def saveGradesAs(self, gs, filename):
+  def saveGradesAs(self, gs, c, filename):
     self.gradeSheet = gs
+    self.comments = c
     self.filename = filename
     self.model.setGradeSheet(self.gradeSheet)
+    self.model.setComments(self.comments)
     self.model.saveGrades(self.filename)
 
   def loadGrades(self, filename):
@@ -36,6 +41,7 @@ class Controller(object):
       self.view.openFileError()
       return ("Error", "Error")
     self.gradeSheet = self.model.getGradeSheet()
+    self.comments = self.model.getComments()
     return self.gradeSheet
     
   def getFilename(self):
@@ -49,6 +55,12 @@ class Controller(object):
     for s in self.model.getGradeSheet():
       students.append(s[0])
     return students
+    
+  def getComments(self):
+    return self.model.getComments()
+  
+  def addComment(self, value, note):
+    self.model.addComment(value, note)
     
   def updateRoster(self, gs):
     self.model.setGradeSheet(gs)
