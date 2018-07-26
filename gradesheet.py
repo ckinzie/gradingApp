@@ -92,24 +92,20 @@ class GradeSheet(object):
     self.eraseView()
     self.makeSheetDisabled()
     
-  def addStudent(self):
+  def addStudent(self, name):
     self.makeSheetNormal()
     tempVars = []
-    self.gradeSheet = self.getGradeSheet()
-    L = list(self.gradeSheet[0])
-    L[0] = 'name'
-    sv = tk.StringVar()
-    sv.set(L[0])
-    tempVars.append(sv)
-    count = 1
-    while count < len(L):
-      L[count] = '0'
-      sv = tk.StringVar()
-      sv.set(L[count])
-      tempVars.append(sv)
-      count += 1
-    self.gradesVarList.insert(0, tempVars)
-    self.gradeSheet.insert(0, L)
+    if (self.gradeSheet == []):
+      L = [None]*4
+    else:
+      L = list(self.gradeSheet[0])
+    L[0] = name
+    tempVars.append(name)
+    L[1] = '100'
+    tempVars.append('100')
+    
+    self.gradesVarList.append(tempVars)
+    self.gradeSheet.append(L)
     self.eraseView()
     self.makeNewSheet(self.gradeSheet)
     self.makeSheetDisabled()
@@ -242,11 +238,10 @@ class GradeSheet(object):
       count += 1
     self.notYet('print '+searchName)
 
-  def deleteName(self, event):
+  def deleteName(self, searchName):
     if len(self.namesVarList) == 0:
       self.mustLoadSheet()
       return
-    searchName = event.widget.get()
     count = 1
     for name in self.namesVarList:
       if name.get() == searchName:
@@ -293,7 +288,6 @@ class GradeSheet(object):
     count = 0
     for x in self.gradesVarList:
       t = []
-      t.append( self.namesVarList[count].get() )
       for y in x:
         t.append( y.get() )
       L.append(t)
@@ -301,13 +295,13 @@ class GradeSheet(object):
     return L
 
   def mustLoadSheet(self):
-    tkMessageBox.showinfo('Oops', 'Must load grades')
+    messagebox.showinfo('Oops', 'Must load grades')
 
   def notYet(self, cmd):
-    tkMessageBox.showinfo('Oops', cmd+'\nis not implemented Yet!')
+    messagebox.showinfo('Oops', cmd+'\nis not implemented Yet!')
 
   def successMessage(self, cmd, msg):
-    tkMessageBox.showinfo('Success', cmd+'\n'+msg)
+    messagebox.showinfo('Success', cmd+'\n'+msg)
 
   def debug(self):
     print ("PRINTING gradeSheet")

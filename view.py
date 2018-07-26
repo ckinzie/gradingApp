@@ -99,12 +99,12 @@ class View:
     scrollbar = tk.Scrollbar(t)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    listbox = tk.Listbox(t, selectmode=tk.SINGLE)
-    listbox.pack(side="top", fill="both", expand=True)
+    self.studentlistbox = tk.Listbox(t, selectmode=tk.SINGLE)
+    self.studentlistbox.pack(side="top", fill="both", expand=True)
     
     students = self.controller.getStudents()
     for s in students:
-      listbox.insert(tk.END, s)
+      self.studentlistbox.insert(tk.END, s)
        
     buttonFrame = tk.Frame(t)
     buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
@@ -114,7 +114,7 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addStudentPopup)
     button.pack(side=tk.LEFT)
     
-    button = tk.Button(buttonFrame, text="Delete Student", width=12, command=lambda: self.deleteStudent(listbox.get(listbox.curselection()))) 
+    button = tk.Button(buttonFrame, text="Delete Student", width=12, command=self.deleteStudent)
     button.config(padx=5, pady=5, bd=5, bg="#ff0000")
     button.pack(side=tk.LEFT)
     
@@ -122,8 +122,8 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
     button.pack(side=tk.RIGHT)
     
-    listbox.config(yscrollcommand=scrollbar.set)
-    scrollbar.config(command=listbox.yview)
+    self.studentlistbox.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=self.studentlistbox.yview)
   
   def addStudentPopup(self):
     t = tk.Toplevel()
@@ -149,13 +149,18 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: addStudent(fentry.get(), lentry.get()))
     button.pack(side=tk.BOTTOM)
     
-    def addStudent(first, last):  
-      self.controller.addStudent(last + ", " + first)
+    def addStudent(first, last):
+      name = last + ", " + first
+      self.gradesheet.addStudent(name)
+      self.gradeSheet = self.gradesheet.getGradeSheet()
+      self.controller.updateRoster(self.gradeSheet)
+      self.studentlistbox.insert(tk.END, name)
       t.destroy()
    
-  def deleteStudent(self, student):
-    print("delete: " + str(student))
-    #self.controller.deleteStudent(student)
+  def deleteStudent(self):
+    name = self.studentlistbox.get(self.studentlistbox.curselection())
+    self.studentlistbox.delete(self.studentlistbox.curselection())
+    self.gradesheet.deleteName(name)
   
   def newView(self, grades):
     self.gradeSheet = grades
@@ -175,13 +180,11 @@ class View:
   def newSheet(self):
     self.controller.newSheet()
     self.gradeSheet = []
+    self.controller.clearFilename()
     self.newView(self.gradeSheet)
     self.namelabel.config(text="New Sheet")
     
   def saveAs(self):
-    if len(self.gradeSheet) == 0:
-      messagebox.showinfo('Oops!', 'Nothing to save.')
-      return
     filename = filedialog.asksaveasfilename(initialdir=os.getcwd()+"/coursesDir", filetypes=(("XML File", "*.xml"),("All Files","*.*")), title= "Choose location to save")
     if not filename:
       return
@@ -191,8 +194,8 @@ class View:
     self.saveCompleted(filename)
       
   def saveGrades(self):
-    if len(self.gradeSheet) == 0:
-      messagebox.showinfo('Oops!', 'Nothing to save.')
+    if (self.controller.getFilename() == None):
+      self.saveAs()
       return
     self.gradeSheet = self.gradesheet.getGradeSheet() 
     self.controller.saveGrades(self.gradeSheet)

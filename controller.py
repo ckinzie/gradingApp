@@ -12,9 +12,7 @@ class Controller(object):
       self.gradeSheet = self.loadGrades(sys.argv[1])
     self.view = view.View(self, self.gradeSheet)
     tk.mainloop()
-    
-  def addStudent(self, name):
-    self.model.addStudent(name)
+
   def dummy(self): print("dummy button")
 
   def newSheet(self):
@@ -42,15 +40,18 @@ class Controller(object):
     
   def getFilename(self):
     return self.filename
+    
+  def clearFilename(self):
+    self.filename = None
 
   def getStudents(self):
     students = []
-    for s in self.gradeSheet:
+    for s in self.model.getGradeSheet():
       students.append(s[0])
     return students
-  
-  def deleteStudent(self, student):
-    self.gradeSheet.deleteName(student)
+    
+  def updateRoster(self, gs):
+    self.model.setGradeSheet(gs)
 
 if __name__ == "__main__":
   controller = Controller()

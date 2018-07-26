@@ -1,9 +1,5 @@
 <?xml version = "1.0"?>
 <GradeSheet>
-  <Name>Smith, Joe</Name>
-    <Grade>101</Grade>
-    <Comments>None</Comments>
-    <Partner>None</Partner>
   <Name>Martin, Sam</Name>
     <Grade>93</Grade>
     <Comments>None</Comments>

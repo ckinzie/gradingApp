@@ -35,7 +35,7 @@ class XmlCollector( xml.sax.ContentHandler ):
     return self.students
 
   def startElement( self, name, attributes ):
-    if name == 'Last':
+    if name == 'Name':
       self.nameFound = True
     elif name == 'Grade':
       self.gradeFound = True
