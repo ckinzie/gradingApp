@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import font
 
 NAME_WIDTH = 17
-HEADER_WIDTH = 15
+HEADER_WIDTH = 28
 
 class GradeSheet(object): 
   def __init__(self, parent, theView, gs, **keywords): 
@@ -57,8 +57,9 @@ class GradeSheet(object):
       yscrollcommand=vscrollbar.set, 
       xscrollcommand=hscrollbar.set, **keywords) 
     self.gradeText.config(wrap=tk.NONE)
-    vscrollbar.config(command=self.gradeText.yview) 
-    hscrollbar.config(command=self.gradeText.xview) 
+    vscrollbar.config(command=self.gradeText.yview)
+    hscrollbar.config(command=self.xscroll) 
+
     self.gradeText.bind_all("<Button-4>", self.onMousewheel)
     self.gradeText.bind_all("<Button-5>", self.onMousewheel)
 
@@ -70,6 +71,10 @@ class GradeSheet(object):
     self.gradeText.pack(side=tk.TOP, fill=tk.BOTH, expand=True) 
 
     self.makeSheet()
+  
+  def xscroll(self, *args):
+      self.gradeText.xview(*args)
+      self.headText.xview(*args)
 
   def eraseView(self):
     self.gradeText.delete("1.0", tk.END)

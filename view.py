@@ -54,7 +54,7 @@ class View:
     root.config(menu=menubar)
     
     #Building the table
-    self.gradesheet = gradesheet.GradeSheet(root, self, self.gradeSheet, width=100, height=20, wrap="none") 
+    self.gradesheet = gradesheet.GradeSheet(root, self, self.gradeSheet, width=144, height=30, wrap="none") 
     if len(self.gradeSheet) == 0:
       self.gradesheet.eraseSheet()
     else:
