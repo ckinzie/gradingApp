@@ -1,0 +1,68 @@
+<?xml version = "1.0"?>
+<GradeSheet>
+  <Name>Adams, Albert</Name>
+    <Grade>97</Grade>
+    <Comments>[0, 3]</Comments>
+    <Partner>None</Partner>
+  <Name>Bolton, Ben</Name>
+    <Grade>100</Grade>
+    <Comments>None</Comments>
+    <Partner>None</Partner>
+  <Name>Connors, Clint</Name>
+    <Grade>86</Grade>
+    <Comments>[5, 7]</Comments>
+    <Partner>None</Partner>
+  <Name>Douglas, Danny</Name>
+    <Grade>88</Grade>
+    <Comments>[2, 3]</Comments>
+    <Partner>None</Partner>
+  <Name>Edison, Eddy</Name>
+    <Grade>75</Grade>
+    <Comments>[2, 5, 6]</Comments>
+    <Partner>None</Partner>
+  <Name>Flinstone, Frank</Name>
+    <Grade>100</Grade>
+    <Comments>[]</Comments>
+    <Partner>None</Partner>
+  <Name>Garcia, Gabby</Name>
+    <Grade>83</Grade>
+    <Comments>[2, 3, 6]</Comments>
+    <Partner>None</Partner>
+  <Name>Hendrix, Harry</Name>
+    <Grade>96</Grade>
+    <Comments>[3, 4]</Comments>
+    <Partner>None</Partner>
+  <Name>Impala, Isabella</Name>
+    <Grade>81</Grade>
+    <Comments>[1, 5, 7]</Comments>
+    <Partner>None</Partner>
+  <Name>Jones, Jerry</Name>
+    <Grade>61</Grade>
+    <Comments>[0, 1, 2, 3, 4, 5, 6, 7]</Comments>
+    <Partner>None</Partner>
+  <Name>Kinzie, Kennedy</Name>
+    <Grade>100</Grade>
+    <Comments>None</Comments>
+    <Partner>None</Partner>
+  <Name>London, Libby</Name>
+    <Grade>98</Grade>
+    <Comments>[4]</Comments>
+    <Partner>None</Partner>
+
+  <Note>Missing header comment</Note>
+    <Value>1</Value>
+  <Note>Misnamed package</Note>
+    <Value>5</Value>
+  <Note>1 day late</Note>
+    <Value>10</Value>
+  <Note>Missing ensures clause</Note>
+    <Value>2</Value>
+  <Note>Missing requires clause</Note>
+    <Value>2</Value>
+  <Note>add function does not work</Note>
+    <Value>10</Value>
+  <Note>Misnamed files</Note>
+    <Value>5</Value>
+  <Note>Fails to check for extreme cases</Note>
+    <Value>4</Value>
+</GradeSheet>

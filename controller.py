@@ -44,6 +44,11 @@ class Controller(object):
     self.comments = self.model.getComments()
     return self.gradeSheet
     
+  def exportAsTxt(self):
+    base = self.filename.split('.')[0]
+    self.model.exportAsTxt(base + ".txt")
+    self.view.exportCompleted(base + ".txt")
+    
   def getFilename(self):
     return self.filename
     

@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 import xml.sax
 import xmlCollector
+import ast
 
 class Model(object):
   def __init__(self):
@@ -52,6 +53,22 @@ class Model(object):
       for col in range(numberCols):
         t.append('('+str(row)+', '+str(col)+')')
       self.gradeSheet.append( list(t) )
+  
+  def exportAsTxt(self, filename):
+    output = open(filename, 'w')
+    studentCount=0
+    for x in self.gradeSheet:
+      output.write(x[0] + " (" + str(x[1]) + "):\n")
+      commentCount = 0
+      appliedComments = ast.literal_eval(str(self.gradeSheet[studentCount][2]))
+      for c in self.comments:
+        if appliedComments != None and commentCount in appliedComments:
+          output.write("(-" + c[1] + ") " + c[0])
+          output.write("\n")
+        commentCount+=1
+      studentCount+=1
+      output.write("\n")
+    output.close()
 
   def setGradeSheet(self, gs):
     self.gradeSheet = gs

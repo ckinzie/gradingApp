@@ -1,0 +1,50 @@
+Adams, Albert (97):
+(-1) Missing header comment
+(-2) Missing ensures clause
+
+Bolton, Ben (100):
+
+Connors, Clint (86):
+(-10) add function does not work
+(-4) Fails to check for extreme cases
+
+Douglas, Danny (88):
+(-10) 1 day late
+(-2) Missing ensures clause
+
+Edison, Eddy (75):
+(-10) 1 day late
+(-10) add function does not work
+(-5) Misnamed files
+
+Flinstone, Frank (100):
+
+Garcia, Gabby (83):
+(-10) 1 day late
+(-2) Missing ensures clause
+(-5) Misnamed files
+
+Hendrix, Harry (96):
+(-2) Missing ensures clause
+(-2) Missing requires clause
+
+Impala, Isabella (81):
+(-5) Misnamed package
+(-10) add function does not work
+(-4) Fails to check for extreme cases
+
+Jones, Jerry (61):
+(-1) Missing header comment
+(-5) Misnamed package
+(-10) 1 day late
+(-2) Missing ensures clause
+(-2) Missing requires clause
+(-10) add function does not work
+(-5) Misnamed files
+(-4) Fails to check for extreme cases
+
+Kinzie, Kennedy (100):
+
+London, Libby (98):
+(-2) Missing requires clause
+

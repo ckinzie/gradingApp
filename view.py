@@ -83,7 +83,7 @@ class View:
     button.pack(side=tk.LEFT)
     #Export button
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.dummy)
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.exportAsTxt)
     button.pack(side=tk.LEFT)
     
     self.namelabel = tk.Label(buttonFrame, text=self.filename, width=15, relief=tk.SUNKEN) 
@@ -340,6 +340,13 @@ class View:
     self.filename = filename
     filename = filename.split('/')[-1]
     msg = "Grades saved to: " + filename
+    messagebox.showinfo('Success',msg)
+    self.namelabel.config(text=self.filename.rsplit('/')[-1])
+    
+  def exportCompleted(self, filename):
+    self.filename = filename
+    filename = filename.split('/')[-1]
+    msg = "Grades exported to: " + filename
     messagebox.showinfo('Success',msg)
     self.namelabel.config(text=self.filename.rsplit('/')[-1])
 
