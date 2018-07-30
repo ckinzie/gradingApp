@@ -4,6 +4,7 @@ from tkinter import Menu
 from tkinter import filedialog
 from tkinter import messagebox
 import gradesheet
+import ast
 
 GEOMETRY = '1060x640+200+10'
 WIDTH=120
@@ -162,16 +163,24 @@ class View:
   def applyCommentsPopup(self, index):
     t = tk.Toplevel()
     t.title("Apply Comments")
-
+    appliedComments = ast.literal_eval(str(self.gradeSheet[index][2]))
+    
     chkboxFrame = tk.Frame(t)
     chkboxFrame.config(padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
     comments = self.controller.getComments()
     variables = []
+    
+    count = 0
     for c in comments:
-      var = tk.IntVar()
-      chkbutton = tk.Checkbutton(chkboxFrame, text="(-" + c[1] + ") " + c[0], variable=var)
+      self.var = tk.IntVar(value=0)
+      chkbutton = tk.Checkbutton(chkboxFrame, text="(-" + c[1] + ") " + c[0], variable=self.var)
+      if appliedComments != None and count in appliedComments:
+        self.var = tk.IntVar(value=1)
+        chkbutton.config(variable = self.var)
       chkbutton.pack(side=tk.TOP, fill = tk.BOTH)
-      variables.append(var)
+      variables.append(self.var)
+      count+=1
+    
     chkboxFrame.pack(side=tk.TOP, fill=tk.BOTH)
        
     buttonFrame = tk.Frame(t)
@@ -186,6 +195,7 @@ class View:
           c.append(count)
         count+=1
       self.gradeSheet[index][2] = c
+      self.newView(self.gradeSheet)
       t.destroy()
     
     button = tk.Button(buttonFrame, text="Apply", width=10) 
@@ -294,7 +304,7 @@ class View:
     if not filename:
       return
     self.gradeSheet = self.gradesheet.getGradeSheet()
-    self.comments = self.gradesheet.getComments()
+    self.comments = self.controller.getComments()
     filename = filename.rsplit('.')[0] + ".xml"
     self.controller.saveGradesAs(self.gradeSheet, self.comments, filename)
     self.saveCompleted(filename)

@@ -103,10 +103,10 @@ class GradeSheet(object):
     tempVars.append(name)
     L[1] = '100'
     tempVars.append('100')
-    L[2] = 'None'
-    tempVars.append('None')
-    L[3] = 'None'
-    tempVars.append('None')
+    L[2] = None
+    tempVars.append(None)
+    L[3] = None
+    tempVars.append(None)
     
     self.gradesVarList.append(tempVars)
     self.gradeSheet.append(L)
@@ -262,6 +262,9 @@ class GradeSheet(object):
         t.append(sv)
         x=tk.Button(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN)
         if count == 2:
+          #if (row[count] != 'None'):
+          #  print (row[count])
+          #  sv.set(len(row[count]) - len('None'))
           x.config(command=popup(rcount))
         if rowParity:
           x.config(bg='#ffffcc')
