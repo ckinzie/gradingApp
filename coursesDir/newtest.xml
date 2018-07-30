@@ -1,27 +1,27 @@
 <?xml version = "1.0"?>
 <GradeSheet>
   <Name>Smith, Joe</Name>
-    <Grade>101</Grade>
-    <Comments>None</Comments>
+    <Grade>100</Grade>
+    <Comments>[]</Comments>
     <Partner>None</Partner>
   <Name>Martin, Sam</Name>
-    <Grade>93</Grade>
-    <Comments>None</Comments>
+    <Grade>100</Grade>
+    <Comments>[]</Comments>
     <Partner>Mike</Partner>
   <Name>Williams, Mike</Name>
-    <Grade>14</Grade>
+    <Grade>83</Grade>
     <Comments>[0, 1, 3]</Comments>
     <Partner>Sam</Partner>
   <Name>Watson, Herold</Name>
-    <Grade>0</Grade>
-    <Comments>[1, 3]</Comments>
+    <Grade>92</Grade>
+    <Comments>[0, 2, 3]</Comments>
     <Partner>None</Partner>
   <Name>Johnson, Aaron</Name>
-    <Grade>67</Grade>
-    <Comments>None</Comments>
+    <Grade>98</Grade>
+    <Comments>[3]</Comments>
     <Partner>None</Partner>
   <Name>Kinzie, Connor</Name>
-    <Grade>100</Grade>
+    <Grade>99</Grade>
     <Comments>[2]</Comments>
     <Partner>None</Partner>
 

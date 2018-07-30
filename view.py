@@ -195,6 +195,7 @@ class View:
           c.append(count)
         count+=1
       self.gradeSheet[index][2] = c
+      self.updateGrade(index)
       self.newView(self.gradeSheet)
       t.destroy()
     
@@ -205,6 +206,19 @@ class View:
     button = tk.Button(buttonFrame, text="Exit", width=10) 
     button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
     button.pack(side=tk.RIGHT)
+    
+  def updateGrade(self, index):
+    appliedComments = ast.literal_eval(str(self.gradeSheet[index][2]))
+    comments = self.controller.getComments()
+    
+    count = 0
+    grade = 100
+    for c in comments:
+      if count in appliedComments:
+        grade -= int(c[1])
+      count+=1
+    self.gradeSheet[index][1] = grade
+    
       
   #Window for adding/removing students from the table
   def manageStudentsPopup(self):
