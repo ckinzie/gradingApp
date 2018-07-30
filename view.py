@@ -48,7 +48,7 @@ class View:
     menubar.add_cascade(label="View", menu=viewmenu)
     #Help menu
     helpmenu = Menu(menubar, tearoff=0)
-    helpmenu.add_command(label="About", command=self.controller.dummy)
+    helpmenu.add_command(label="About", command=self.about)
     menubar.add_cascade(label="Help", menu=helpmenu)
           
     root.config(menu=menubar)
@@ -349,6 +349,10 @@ class View:
     msg = "Grades exported to: " + filename
     messagebox.showinfo('Success',msg)
     self.namelabel.config(text=self.filename.rsplit('/')[-1])
+  
+      
+  def about(self):
+    messagebox.showinfo("About", "This app was created by Connor Kinzie for CPSC 8700 at Clemson University taught by Dr. Brian Malloy on August 3rd, 2018. For questions, contact ckinzie@clemson.edu\n\n" + "This app calculates and stores grades for students. You can add students to a new page through the 'Manage Students' button. To create a list of comments, use the 'Manage Comments' button. Each comment must have an number value and an accompanying note. The program will calculate each students' grade by deducting applied comments from their max score. To assign comments to a student, click on the 'Comments' cell for that specific student and check the comments you wish to apply. Their grade will automatically be updated. You can also export a .txt file with students, grades, and applied comments with the 'Export as .txt' button.")
 
 if __name__ == "__main__":
   view = View(NotAController())
