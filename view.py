@@ -24,6 +24,10 @@ class View:
     self.filename='New Sheet'
     self.boxFont = ('symbol', 14)
     
+    def save(event):
+      self.saveGrades()
+    root.bind('<Control-s>', save)      
+    
     #Creating top menu bar
     menubar = Menu(root)
     #File menu
@@ -38,13 +42,13 @@ class View:
     menubar.add_cascade(label="File", menu=filemenu)
     #Edit menu
     editmenu = Menu(menubar, tearoff=0)
-    editmenu.add_command(label="Preferences", command=self.controller.dummy)
-    editmenu.add_command(label="Add Tab", command=self.controller.dummy)
-    editmenu.add_command(label="Delete Tab", command=self.controller.dummy)
+    editmenu.add_command(label="Preferences", command=self.controller.dummy, state=tk.DISABLED)
+    editmenu.add_command(label="Add Tab", command=self.controller.dummy, state=tk.DISABLED)
+    editmenu.add_command(label="Delete Tab", command=self.controller.dummy, state=tk.DISABLED)
     menubar.add_cascade(label="Edit", menu=editmenu)
     #View menu
     viewmenu = Menu(menubar, tearoff=0)
-    viewmenu.add_command(label="Color Scheme", command=self.controller.dummy)
+    viewmenu.add_command(label="Color Scheme", command=self.controller.dummy, state=tk.DISABLED)
     menubar.add_cascade(label="View", menu=viewmenu)
     #Help menu
     helpmenu = Menu(menubar, tearoff=0)
@@ -79,7 +83,7 @@ class View:
     button.pack(side=tk.LEFT)
     #Add Tab button
     button = tk.Button(buttonFrame, text="Add Tab", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.controller.dummy)
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.controller.dummy, state=tk.DISABLED)
     button.pack(side=tk.LEFT)
     #Export button
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
