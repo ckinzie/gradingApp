@@ -4,24 +4,24 @@ Course: CpSc 8700
 
 Clemson Email Address: ckinzie@clemson.edu
 
-Project Number 6
+Project Number 7
 
-Project due date: July 25th
+Project due date: July 31th
 
 Brief Review of Project description as stated in my Specification for the Project:
   The application I am constructing is a grading app that will help me log grades and comments when grading lab assignments. The main GUI will be a table setup with a column for "Students", "Grades", and "Comments". I will be able to log comments and calculate students' grades automatically instead of counting up the deductions by hand.
 
 The easiest part of this project:
-  The easiest part was setting up the menu and the buttons on the GUI. Programming the buttons to perform tasks has also been fairly simple.
+  Calculating the grades based on comments were pretty easy
 
 Problems that I had in completing this project:
-  Setting up the table initally gave me problems, but the example you sent me has help tremendously. I have had to make quite a few adjustments to make the code more my own, but I fully understand all the code that I have adopted/modified. I have not hit any major snags so progress is slow but steady.
+  Saving comments to a grade sheet and applying then to specific students took me a while to figure out, but it's working now.
 
 How successful was I in achieving the objectives as stated in my Specification for the first Deliverable (Project #5):
-  My initial deliverable objective was to construct the GUI that allows me to enter and update grades. I also was hoping to be able to open and save files on my computer. The basic design for the GUI is complete (although I will probably tweak it towards the end). I can also create new files, save files, and load files, so I have completed most of my objectives. I have not been able to enter/delete students yet, but I am close and the GUI aspect needed to accomplish these tasks have been put in place.
+  I believe I have accomplished everything I stated in my deliverable minus tabs. I'm not sure I will be able to finish the tabs by the end of course, but I did consider that a stretch goal that is not neccessary for the functionality of the application.
 
 What are my objectives for Project #7, the second Deliverable?
-  For the next deliverable, I should be able to manipulate the students in my table (edit, add, remove, etc.) I also want to work on and be close to finishing my "Comments" portion, because what I have envisioned is a little complicated. If all that is done, the core of my project will be complete and I can start working on my stretch goals.
+  For the final deliverable, I want to polish as much as possible and remove any bugs I find. I would also like to add a couple of the stretch goals like the partners column and a few of the preference menu buttons.
 
 
 

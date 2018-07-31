@@ -112,7 +112,7 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addCommentPopup)
     button.pack(side=tk.LEFT)
     
-    button = tk.Button(buttonFrame, text="Delete Comment", width=12, command=self.deleteComment)
+    button = tk.Button(buttonFrame, text="Delete Comment", width=12, command=lambda: self.confirmDelete(self.deleteComment, self.commentslistbox.get(self.commentslistbox.curselection())))
     button.config(padx=5, pady=5, bd=5, bg="#ff0000")
     button.pack(side=tk.LEFT)
     
@@ -158,6 +158,7 @@ class View:
     comment = self.commentslistbox.curselection()[0]
     self.commentslistbox.delete(self.commentslistbox.curselection())
     self.controller.deleteComment(comment)
+    self.t.destroy()
     
   #Window for applying comments to a specific grade
   def applyCommentsPopup(self, index):
@@ -243,7 +244,7 @@ class View:
     button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.addStudentPopup)
     button.pack(side=tk.LEFT)
     
-    button = tk.Button(buttonFrame, text="Delete Student", width=12, command=self.deleteStudent)
+    button = tk.Button(buttonFrame, text="Delete Student", width=12, command=lambda: self.confirmDelete(self.deleteStudent, self.studentlistbox.get(self.studentlistbox.curselection())))
     button.config(padx=5, pady=5, bd=5, bg="#ff0000")
     button.pack(side=tk.LEFT)
     
@@ -290,6 +291,7 @@ class View:
     name = self.studentlistbox.get(self.studentlistbox.curselection())
     self.studentlistbox.delete(self.studentlistbox.curselection())
     self.gradesheet.deleteName(name)
+    self.t.destroy()
   
   def newView(self, grades):
     self.gradeSheet = grades
@@ -327,7 +329,7 @@ class View:
     if (self.controller.getFilename() == None):
       self.saveAs()
       return
-    self.gradeSheet = self.gradesheet.getGradeSheet() ####THIS IS WHERE MY SAVING PROBLEM IS
+    self.gradeSheet = self.gradesheet.getGradeSheet()
     self.comments = self.controller.getComments()
     self.controller.saveGrades(self.gradeSheet, self.comments)
     filename = self.controller.getFilename()
@@ -349,7 +351,24 @@ class View:
     msg = "Grades exported to: " + filename
     messagebox.showinfo('Success',msg)
     self.namelabel.config(text=self.filename.rsplit('/')[-1])
-  
+    
+  def confirmDelete(self, c, item):
+    self.t = tk.Toplevel()
+    self.t.title("Confirm Deletion")
+    label = tk.Label(self.t, text='Are you sure you wish to delete "' + str(item)+'"', width=50, height=5)
+    label.pack(side=tk.TOP)
+    
+    buttonFrame = tk.Frame(self.t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    confirm = tk.Button(buttonFrame, text="Confirm", width=12)
+    confirm.config(padx=5, pady=5, bd=5, bg="#00ff00", command=c)
+    confirm.pack(side=tk.LEFT)
+    
+    deny = tk.Button(buttonFrame, text="Deny", width=12) 
+    deny.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.t.destroy)
+    deny.pack(side=tk.RIGHT)
       
   def about(self):
     messagebox.showinfo("About", "This app was created by Connor Kinzie for CPSC 8700 at Clemson University taught by Dr. Brian Malloy on August 3rd, 2018. For questions, contact ckinzie@clemson.edu\n\n" + "This app calculates and stores grades for students. You can add students to a new page through the 'Manage Students' button. To create a list of comments, use the 'Manage Comments' button. Each comment must have an number value and an accompanying note. The program will calculate each students' grade by deducting applied comments from their max score. To assign comments to a student, click on the 'Comments' cell for that specific student and check the comments you wish to apply. Their grade will automatically be updated. You can also export a .txt file with students, grades, and applied comments with the 'Export as .txt' button.")

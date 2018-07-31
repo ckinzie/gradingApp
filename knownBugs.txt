@@ -1,0 +1,2 @@
+Deleting a comment affects the ordering of the applied comment. If a student has comments 0,2,3 applied and I delete comment 1 from the list, then the table does not update. If I click on that student, comments 0 and 2(which used to be 3) will be clicked, even though all three should be selected. (**attaching an id to each comment instead of referencing by index may fix this**)
+Clicking delete when nothing is selected throws an error but does not affect the program

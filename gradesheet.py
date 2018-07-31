@@ -240,7 +240,6 @@ class GradeSheet(object):
     self.eraseView()
     self.makeNewSheet(self.gradeSheet)
     self.makeSheetDisabled()
-    self.successMessage(searchName, " deleted")
 
   def makeNames(self):
     self.namesVarList = []
