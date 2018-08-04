@@ -18,6 +18,11 @@ class GradeSheet(object):
     self.columnVarList = []
     self.gradesVarList = []
     self.namesVarList = []
+    
+    # color variables
+    self.headerColor = '#ccffcc'
+    self.oddColor = '#ffffcc'
+    self.evenColor = '#d9d9d9'
 
     # Set some defaults 
     if "width" not in keywords: keywords["width"]=24 
@@ -75,6 +80,32 @@ class GradeSheet(object):
   def xscroll(self, *args):
       self.gradeText.xview(*args)
       self.headText.xview(*args)
+
+  def setColors(self, h, o, e):
+    if (h != None):
+      self.headerColor = h
+      for x in self.headerList:
+        x.config(bg = self.headerColor)
+    if (o != None):
+      self.oddColor = o
+    if (e != None):
+      self.evenColor = e
+  
+  def setDefaultColors(self):
+    self.headerColor = '#ccffcc'
+    self.oddColor = '#ffffcc'
+    self.evenColor = '#d9d9d9'
+    for x in self.headerList:
+      x.config(bg = self.headerColor)
+  
+  def getHeaderColor(self):
+    return self.headerColor
+    
+  def getEvenColor(self):
+    return self.evenColor
+    
+  def getOddColor(self):
+    return self.oddColor
 
   def eraseView(self):
     self.gradeText.delete("1.0", tk.END)
@@ -153,12 +184,14 @@ class GradeSheet(object):
 
   def makeHeader(self):
     self.columnVarList = []
+    self.headerList = []
     for col in self.columnNames: 
       sv = tk.StringVar()
       sv.set(col)
       self.columnVarList.append(sv)
       x=tk.Button(self.headText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN) 
-      x.config(bg='#ccffcc')
+      x.config(bg=self.headerColor)
+      self.headerList.append(x)
       self.headText.window_create(tk.END, window=x)
 
   def sortColumn(self, event, withNames=False):
@@ -266,12 +299,11 @@ class GradeSheet(object):
         t.append(sv)
         x=tk.Button(self.gradeText, textvariable=sv, width=HEADER_WIDTH, relief=tk.SUNKEN)
         if count == 2:
-          #if (row[count] != 'None'):
-          #  print (row[count])
-          #  sv.set(len(row[count]) - len('None'))
           x.config(command=popup(rcount))
         if rowParity:
-          x.config(bg='#ffffcc')
+          x.config(bg=self.oddColor)
+        else:
+          x.config(bg=self.evenColor)
         self.gradeText.window_create(tk.END, window=x) 
       L.append(t)
       if row != self.gradeSheet[-1]:

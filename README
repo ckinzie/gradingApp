@@ -18,7 +18,5 @@ Problems that I had in completing this project:
   Saving comments to a grade sheet and applying then to specific students took me a while to figure out, also, creating the table was difficult, but the example project you sent me help tremendously.
 
 How successful was I in achieving the objectives as stated in my Specification for the first Deliverable (Project #5):
-  I believe I have accomplished all of the basic goals that I stated in my deliverable. I was unable to finish my stretch goals such as tabs, partners, and some of the stylistic options in the menu bar. I want to keep working on this project and hopefully add those features in the near future.
+  I believe I have accomplished all of the basic goals that I stated in my deliverable. I was unable to finish my stretch goals such as tabs, and partners, but I was able to add the color scheme in the "View" menu. I want to keep working on this project and hopefully add those other stretch goals in the near future.
   One bug my program has is that deleting a comment all together affects the ordering of the applied comments for a student. If a student has comments 0,2,3 applied and I delete comment 1 from the list, then the table does not update. If I click on that student, comments 0 and 2(which used to be 3) will be clicked, even though all three should be selected. I may be able to fix this by attaching an id to each comment instead of referencing each comment by index. Also, if I try to delete a comment or student when nothing is selected in the listbox, an error gets thrown, but does not affect the running of the program.
-
-

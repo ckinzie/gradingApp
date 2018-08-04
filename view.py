@@ -5,6 +5,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import gradesheet
 import ast
+import re
 
 GEOMETRY = '1060x640+200+10'
 WIDTH=120
@@ -48,7 +49,7 @@ class View:
     menubar.add_cascade(label="Edit", menu=editmenu)
     #View menu
     viewmenu = Menu(menubar, tearoff=0)
-    viewmenu.add_command(label="Color Scheme", command=self.controller.dummy, state=tk.DISABLED)
+    viewmenu.add_command(label="Color Scheme", command=self.colorSchemePopup)
     menubar.add_cascade(label="View", menu=viewmenu)
     #Help menu
     helpmenu = Menu(menubar, tearoff=0)
@@ -93,6 +94,81 @@ class View:
     self.namelabel = tk.Label(buttonFrame, text=self.filename, width=15, relief=tk.SUNKEN) 
     self.namelabel.config(padx=2, pady=2, bd=2, bg="#ffffff")
     self.namelabel.pack(side=tk.RIGHT)
+    
+  def colorSchemePopup(self):
+    t = tk.Toplevel()
+    t.title("Color Scheme")
+    
+    hcentry = tk.StringVar()
+    hcentry.set(self.gradesheet.getHeaderColor())
+    ocentry = tk.StringVar()
+    ocentry.set(self.gradesheet.getOddColor())
+    ecentry = tk.StringVar()
+    ecentry.set(self.gradesheet.getEvenColor())
+    
+    headerFrame = tk.Frame(t)
+    headerFrame.config(height=HEIGHT, padx=5, pady=5, bd=5)
+    headerFrame.pack(side=tk.TOP, fill=tk.BOTH)
+    oddFrame = tk.Frame(t)
+    oddFrame.config(height=HEIGHT, padx=5, pady=5, bd=5)
+    oddFrame.pack(side=tk.TOP, fill=tk.BOTH)
+    evenFrame = tk.Frame(t)
+    evenFrame.config(height=HEIGHT, padx=5, pady=5, bd=5)
+    evenFrame.pack(side=tk.TOP, fill=tk.BOTH)
+    buttonFrame = tk.Frame(t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    header = tk.Label(headerFrame, text = "Header:")
+    header.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    headerentry = tk.Entry(headerFrame, textvariable = hcentry)
+    headerentry.focus_set()
+    headerentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    odd = tk.Label(oddFrame, text = "Odd:")
+    odd.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    oddentry = tk.Entry(oddFrame, textvariable = ocentry)
+    oddentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    even = tk.Label(evenFrame, text = "Even:")
+    even.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    evenentry = tk.Entry(evenFrame, textvariable = ecentry)
+    evenentry.pack(side=tk.LEFT, fill="both", expand=True)
+    
+    def setColors(h, o, e):
+      hmatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', h)
+      omatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', o)
+      ematch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', e)
+      if (not hmatch):
+        h = None
+      if (not omatch):
+        o = None
+      if (not ematch):
+        e = None
+      self.gradesheet.setColors(h, o, e)
+      self.newView(self.gradeSheet)
+      t.destroy()
+    
+    def setDefaultColors():
+      self.gradesheet.setDefaultColors()
+      self.newView(self.gradeSheet)
+      t.destroy()
+      
+    button = tk.Button(buttonFrame, text="Enter", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#00ff00", command=lambda:(setColors(hcentry.get(), ocentry.get(), ecentry.get())))
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Set to Default", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ffff00", command=setDefaultColors)
+    button.pack(side=tk.LEFT)
+    
+    button = tk.Button(buttonFrame, text="Cancel", width=10) 
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=t.destroy)
+    button.pack(side=tk.RIGHT)
+    
   #Window for adding/removing comments from the table
   def manageCommentsPopup(self):
     t = tk.Toplevel()
