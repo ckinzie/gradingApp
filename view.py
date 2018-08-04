@@ -87,7 +87,7 @@ class View:
     button.pack(side=tk.LEFT)
     #Export button
     button = tk.Button(buttonFrame, text="Export as .txt", width=15) 
-    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.controller.exportAsTxt)
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.exportAsTxt)
     button.pack(side=tk.LEFT)
     
     self.namelabel = tk.Label(buttonFrame, text=self.filename, width=15, relief=tk.SUNKEN) 
@@ -148,12 +148,12 @@ class View:
     noteentry.pack(side=tk.LEFT, fill="both", expand=True)
     
     button = tk.Button(t, text="Enter", width=10) 
-    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: addComment(ventry.get(), nentry.get()))
+    button.config(padx=5, pady=5, bd=5, bg="#ff0000", command=lambda: addComment(nentry.get(), ventry.get()))
     button.pack(side=tk.BOTTOM)
     
-    def addComment(value, note):
+    def addComment(note, value):
       comment = "(-" + value + ") " + note
-      self.controller.addComment(value, note)
+      self.controller.addComment(note, value)
       self.gradeSheet = self.gradesheet.getGradeSheet()
       self.commentslistbox.insert(tk.END, comment)
       t.destroy()
@@ -339,6 +339,29 @@ class View:
     filename = self.controller.getFilename()
     self.saveCompleted(filename)
     
+  def exportAsTxt(self):
+    self.t = tk.Toplevel()
+    self.t.title("Confirm save and export")
+    label = tk.Label(self.t, text="File must be saved to export. Do you wish to save and export?", width=50, height=5)
+    label.pack(side=tk.TOP)
+    
+    buttonFrame = tk.Frame(self.t)
+    buttonFrame.config(height=HEIGHT, padx=5, pady=5, bd=5, relief=tk.RAISED, bg='#000000')
+    buttonFrame.pack(side=tk.BOTTOM, fill=tk.BOTH)
+    
+    confirm = tk.Button(buttonFrame, text="Save and Export", width=12)
+    confirm.config(padx=5, pady=5, bd=5, bg="#00ff00", command=self.saveAndExport)
+    confirm.pack(side=tk.LEFT)
+    
+    deny = tk.Button(buttonFrame, text="Cancel", width=12) 
+    deny.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.t.destroy)
+    deny.pack(side=tk.RIGHT)
+  
+  def saveAndExport(self):
+    self.saveGrades()
+    self.controller.exportAsTxt()
+    self.t.destroy()
+    
   def openFileError(self):
     messagebox.showwarning('ERROR', 'Could not open selected file')
   
@@ -350,11 +373,9 @@ class View:
     self.namelabel.config(text=self.filename.rsplit('/')[-1])
     
   def exportCompleted(self, filename):
-    self.filename = filename
     filename = filename.split('/')[-1]
     msg = "Grades exported to: " + filename
     messagebox.showinfo('Success',msg)
-    self.namelabel.config(text=self.filename.rsplit('/')[-1])
     
   def confirmDelete(self, c, item):
     self.t = tk.Toplevel()
@@ -370,7 +391,7 @@ class View:
     confirm.config(padx=5, pady=5, bd=5, bg="#00ff00", command=c)
     confirm.pack(side=tk.LEFT)
     
-    deny = tk.Button(buttonFrame, text="Deny", width=12) 
+    deny = tk.Button(buttonFrame, text="Cancel", width=12) 
     deny.config(padx=5, pady=5, bd=5, bg="#ff0000", command=self.t.destroy)
     deny.pack(side=tk.RIGHT)
       

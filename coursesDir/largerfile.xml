@@ -8,10 +8,6 @@
     <Grade>100</Grade>
     <Comments>None</Comments>
     <Partner>None</Partner>
-  <Name>Connors, Clint</Name>
-    <Grade>86</Grade>
-    <Comments>[5, 7]</Comments>
-    <Partner>None</Partner>
   <Name>Douglas, Danny</Name>
     <Grade>88</Grade>
     <Comments>[2, 3]</Comments>
@@ -48,6 +44,10 @@
     <Grade>98</Grade>
     <Comments>[4]</Comments>
     <Partner>None</Partner>
+  <Name>connors, clint</Name>
+    <Grade>87</Grade>
+    <Comments>[0, 3, 5]</Comments>
+    <Partner>None</Partner>
 
   <Note>Missing header comment</Note>
     <Value>1</Value>
@@ -65,4 +65,6 @@
     <Value>5</Value>
   <Note>Fails to check for extreme cases</Note>
     <Value>4</Value>
+  <Note>doesnt work</Note>
+    <Value>25</Value>
 </GradeSheet>

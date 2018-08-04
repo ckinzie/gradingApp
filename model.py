@@ -44,7 +44,7 @@ class Model(object):
       return ("Error reading file " + filename,)
     except (xml.sax.SAXParseException):
       return ("Error parsing " + filename)
-
+  '''
   def generateDefaultSheet(self, numberRows, numberCols):
     for col in range(numberCols):
       self.columnNames.append('Column '+str(col))
@@ -53,6 +53,7 @@ class Model(object):
       for col in range(numberCols):
         t.append('('+str(row)+', '+str(col)+')')
       self.gradeSheet.append( list(t) )
+  '''
   
   def exportAsTxt(self, filename):
     output = open(filename, 'w')
@@ -82,7 +83,7 @@ class Model(object):
   def getComments(self):
     return self.comments
     
-  def addComment(self, value, note):
+  def addComment(self, note, value):
     t = [note, value]
     self.comments.append(list(t))
   

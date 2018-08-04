@@ -4,10 +4,6 @@ Adams, Albert (97):
 
 Bolton, Ben (100):
 
-Connors, Clint (86):
-(-10) add function does not work
-(-4) Fails to check for extreme cases
-
 Douglas, Danny (88):
 (-10) 1 day late
 (-2) Missing ensures clause
@@ -48,5 +44,8 @@ Kinzie, Kennedy (100):
 London, Libby (98):
 (-2) Missing requires clause
 
-Williams, Ian (100):
+connors, clint (87):
+(-1) Missing header comment
+(-2) Missing ensures clause
+(-10) add function does not work
 

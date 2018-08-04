@@ -4,24 +4,21 @@ Course: CpSc 8700
 
 Clemson Email Address: ckinzie@clemson.edu
 
-Project Number 7
+Project Number 8
 
-Project due date: July 31th
+Project due date: August 8th
 
 Brief Review of Project description as stated in my Specification for the Project:
   The application I am constructing is a grading app that will help me log grades and comments when grading lab assignments. The main GUI will be a table setup with a column for "Students", "Grades", and "Comments". I will be able to log comments and calculate students' grades automatically instead of counting up the deductions by hand.
 
 The easiest part of this project:
-  Calculating the grades based on comments were pretty easy
+  Overall, creating the buttons and the menu bar were probably the easiest tasks to complete.
 
 Problems that I had in completing this project:
-  Saving comments to a grade sheet and applying then to specific students took me a while to figure out, but it's working now.
+  Saving comments to a grade sheet and applying then to specific students took me a while to figure out, also, creating the table was difficult, but the example project you sent me help tremendously.
 
 How successful was I in achieving the objectives as stated in my Specification for the first Deliverable (Project #5):
-  I believe I have accomplished everything I stated in my deliverable minus tabs. I'm not sure I will be able to finish the tabs by the end of course, but I did consider that a stretch goal that is not neccessary for the functionality of the application.
-
-What are my objectives for Project #7, the second Deliverable?
-  For the final deliverable, I want to polish as much as possible and remove any bugs I find. I would also like to add a couple of the stretch goals like the partners column and a few of the preference menu buttons.
-
+  I believe I have accomplished all of the basic goals that I stated in my deliverable. I was unable to finish my stretch goals such as tabs, partners, and some of the stylistic options in the menu bar. I want to keep working on this project and hopefully add those features in the near future.
+  One bug my program has is that deleting a comment all together affects the ordering of the applied comments for a student. If a student has comments 0,2,3 applied and I delete comment 1 from the list, then the table does not update. If I click on that student, comments 0 and 2(which used to be 3) will be clicked, even though all three should be selected. I may be able to fix this by attaching an id to each comment instead of referencing each comment by index. Also, if I try to delete a comment or student when nothing is selected in the listbox, an error gets thrown, but does not affect the running of the program.
 
 

@@ -64,8 +64,8 @@ class Controller(object):
   def getComments(self):
     return self.model.getComments()
   
-  def addComment(self, value, note):
-    self.model.addComment(value, note)
+  def addComment(self, note, value):
+    self.model.addComment(note, value)
   
   def deleteComment(self, index):
     self.model.deleteComment(index)
